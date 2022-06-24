@@ -1,0 +1,21 @@
+body{
+    font-family: 'Stint Ultra Expanded', cursive;
+    /*background-color: #00193b;*/
+}
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+#isen{
+    grid-column: 1 ;
+    grid-row: 1;
+}
+
+#titre{
+    grid-column: 2 ;
+    grid-row: 1;
+}
+
