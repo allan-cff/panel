@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <title>Projet groupe 8</title>
     <link href="projet.css" rel="stylesheet">
-      <script src="index2.js" defer></script>
-
-      <script src="index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+    <script src="index.js" defer></script>
     <link href="https://fonts.googleapis.com/css?family=Stint+Ultra+Expanded" rel="stylesheet">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/4e06933d63.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,20 +25,18 @@
         <img id="astronaut" src="images/astronaut.png" alt="astronaut">
     </div>
 
-    <canvas></canvas>
+    <div id="canvasContainer"></div>
 
     <div class="pageBottomButtons">
         <form id="planetSetup">
-            <select name="planet" >
-                <option selected>Terre</option>
-                <option>Mercure</option>
-                <option>Mars</option>
+            <select id="planetSelect" name="planet" >
             </select>
             <input type="color">
+            <input type="checkbox" checked>
         </form>
         <form id="canvasControl">
-            <button class="pauseButton"><i class="fas fa-pause"></i></button>
-            <button>X2</button>
+            <button class="pauseButton" type="button"><i class="fas fa-pause"></i></button>
+            <button type="button" id="playSpeed">X1</button>
         </form>
         <div></div>
     </div>

@@ -1,28 +1,107 @@
-fetch('test.json')
-    .then(res => res.json())
-    .then(data => {
-        console.log(data)
-    })
-    .catch(err => console.error(err));
+let rounds = 0
+let isRunning = true;
+let planetConfig = {};
+let playSpeed = 1;
 
-function buildSaveButton(parentElement, data, filename) {
-    parentElement.querySelectorAll(".downloadButton").forEach(button => button.remove());
-    parentElement.insertAdjacentHTML("beforeend", "<a class='downloadButton' id='" + 'download_' + filename + "'><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d=\"M480 352h-133.5l-45.25 45.25C289.2 409.3 273.1 416 256 416s-33.16-6.656-45.25-18.75L165.5 352H32c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h448c17.67 0 32-14.33 32-32v-96C512 366.3 497.7 352 480 352zM432 456c-13.2 0-24-10.8-24-24c0-13.2 10.8-24 24-24s24 10.8 24 24C456 445.2 445.2 456 432 456zM233.4 374.6C239.6 380.9 247.8 384 256 384s16.38-3.125 22.62-9.375l128-128c12.49-12.5 12.49-32.75 0-45.25c-12.5-12.5-32.76-12.5-45.25 0L288 274.8V32c0-17.67-14.33-32-32-32C238.3 0 224 14.33 224 32v242.8L150.6 201.4c-12.49-12.5-32.75-12.5-45.25 0c-12.49 12.5-12.49 32.75 0 45.25L233.4 374.6z\"/></svg>Télécharger</a>");
-    let downloadButton = parentElement.querySelector(`#download_${filename}`);
-    downloadButton.download = filename + '.json';
-    let blob = new Blob([JSON.stringify(data)], {type: "octet/stream"});
-    downloadButton.href = window.URL.createObjectURL(blob);
+
+function preload(){
+    data = loadJSON('./mercury.json');
 }
 
-document.querySelector("#objectSetupForm").addEventListener("submit", function(event){
-    event.preventDefault();
-    let data = {name : event.target.name.value,
-                mass : event.target.mass.value,
-                perihelion : event.target.perihelion.value,
-                color : event.target.color.value
+function setup() {
+    let width = 500;
+    let height = 700;
+    let canvas = createCanvas(height, width);
+    canvas.parent('canvasContainer');
+    for(key in data){
+        let select = document.querySelector("#planetSelect");
+        select.insertAdjacentHTML("beforeend", "<option>" + key + "</option>");
+        planetConfig[key] = {color: "#ffbb00"};
+        planetConfig[key].visible= true;
     }
-    buildSaveButton(document.querySelector("#objectSetupForm"), data, event.target.name.value);
+    document.querySelector("#planetSetup input[type=color]").value = "#ffbb00";
+    frameRate(30);
+    loop();
+}
+
+function draw() {
+    resetPos();
+    for (const [key, value] of Object.entries(data)) {
+        setPlanet(key);
+        if(planetConfig[key].visible){
+            placePoint(value[rounds][0], Math.max(width, height), 2.000000e+11);
+        }
+    }
+    if(data["mercury-euler"][rounds+playSpeed]!==undefined){
+        rounds+=playSpeed;
+    }
+}
+
+function resetPos(){
+    clear();
+    translate(width/2, height/2); //moving to center of repere
+    background("#00132d");
+    fill("#ffdd00");
+    circle(0, 0, 20);
+}
+
+function setPlanet(planet){
+    fill(planetConfig[planet].color);
+}
+
+function placePoint(coordinates, canvaMaxLen, realMaxLen){
+    let x = coordinates[0]===0 ? 0 : coordinates[0]/realMaxLen*(canvaMaxLen-10);
+    let y = coordinates[1]===0 ? 0 : coordinates[1]/realMaxLen*(canvaMaxLen-10);
+    circle(x, y, 10);
+}
+
+document.querySelector(".pauseButton").addEventListener("click", (event) => {
+    document.querySelector(".pauseButton i").classList.toggle("fa-pause");
+    document.querySelector(".pauseButton i").classList.toggle("fa-play");
+    if(isRunning){
+        noLoop();
+        isRunning = false;
+    } else {
+        loop();
+        isRunning = true;
+    }
+});
+
+
+document.querySelector("#planetSetup input[type='color']").addEventListener("change", (e)=>{
+    planetConfig[document.querySelector("#planetSetup select").value].color = e.target.value;
 })
-
-
-TEST();
+document.querySelector("#planetSetup input[type='checkbox']").addEventListener("click", (e) => {
+    planetConfig[document.querySelector("#planetSetup select").value].visible = !planetConfig[document.querySelector("#planetSetup select").value].visible;
+})
+document.querySelector("#planetSetup select").addEventListener("change", (e) => {
+    document.querySelector("#planetSetup input[type='checkbox']").checked = planetConfig[e.target.value].visible;
+    document.querySelector("#planetSetup input[type='color']").value = planetConfig[e.target.value].color;
+})
+document.querySelector("#playSpeed").addEventListener("click", (e) => {
+    console.log(e.target.innerHTML);
+    if(e.target.innerHTML === "X1"){
+        e.target.innerHTML = "X2";
+        playSpeed = 2;
+        return;
+    }
+    if(e.target.innerHTML === "X2"){
+        e.target.innerHTML = "X4";
+        playSpeed = 4;
+        return;
+    }
+    if(e.target.innerHTML === "X4"){
+        e.target.innerHTML = "X10";
+        playSpeed = 10;
+        return;
+    }
+    if(e.target.innerHTML === "X10"){
+        e.target.innerHTML = "X50";
+        playSpeed = 50;
+        return;
+    }
+    if(e.target.innerHTML === "X50"){
+        e.target.innerHTML = "X1";
+        playSpeed = 1;
+    }
+})
