@@ -29,7 +29,7 @@ function draw() {
     for (const [key, value] of Object.entries(data)) {
         setPlanet(key);
         if(planetConfig[key].visible){
-            placePoint(value[rounds][0], Math.max(width, height), 2.000000e+11);
+            placePoint(value[rounds][0], Math.min(width, height), 2.000000e+11);
         }
     }
     if(data["mercury-euler"][rounds+playSpeed]!==undefined){
@@ -49,9 +49,9 @@ function setPlanet(planet){
     fill(planetConfig[planet].color);
 }
 
-function placePoint(coordinates, canvaMaxLen, realMaxLen){
-    let x = coordinates[0]===0 ? 0 : coordinates[0]/realMaxLen*(canvaMaxLen-10);
-    let y = coordinates[1]===0 ? 0 : coordinates[1]/realMaxLen*(canvaMaxLen-10);
+function placePoint(coordinates, canvaMinLen, realMaxLen){
+    let x = coordinates[0]===0 ? 0 : coordinates[0]/realMaxLen*(canvaMinLen-5);
+    let y = coordinates[1]===0 ? 0 : coordinates[1]/realMaxLen*(canvaMinLen-5);
     circle(x, y, 10);
 }
 
