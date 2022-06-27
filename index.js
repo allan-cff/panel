@@ -21,6 +21,7 @@ function setup() {
     }
     document.querySelector("#planetSetup input[type=color]").value = "#ffbb00";
     frameRate(30);
+    noStroke();
     loop();
 }
 
@@ -30,6 +31,7 @@ function draw() {
         setPlanet(key);
         if(planetConfig[key].visible){
             placePoint(value[rounds][0], Math.min(width, height), 2.000000e+11);
+            trace(value, rounds, Math.min(width, height), 2.000000e+11);
         }
     }
     if(data["mercury-euler"][rounds+playSpeed]!==undefined){
@@ -53,6 +55,15 @@ function placePoint(coordinates, canvaMinLen, realMaxLen){
     let x = coordinates[0]===0 ? 0 : coordinates[0]/realMaxLen*(canvaMinLen-5);
     let y = coordinates[1]===0 ? 0 : coordinates[1]/realMaxLen*(canvaMinLen-5);
     circle(x, y, 10);
+}
+
+function trace(pointList, r, canvaMinLen, realMaxLen){
+    for(let i = 0; i <= r; i++){
+        console.log(i, pointList[i][0][0], pointList[i][0][1])
+        let x = pointList[i][0][0]===0 ? 0 : pointList[i][0][0]/realMaxLen*(canvaMinLen-5);
+        let y = pointList[i][0][1]===0 ? 0 : pointList[i][0][1]/realMaxLen*(canvaMinLen-5);
+        circle(x, y, 0.5);
+    }
 }
 
 document.querySelector(".pauseButton").addEventListener("click", (event) => {
@@ -96,11 +107,6 @@ document.querySelector("#playSpeed").addEventListener("click", (e) => {
         return;
     }
     if(e.target.innerHTML === "X10"){
-        e.target.innerHTML = "X50";
-        playSpeed = 50;
-        return;
-    }
-    if(e.target.innerHTML === "X50"){
         e.target.innerHTML = "X1";
         playSpeed = 1;
     }
