@@ -91,6 +91,11 @@ document.querySelector(".pauseButton").addEventListener("click", (event) => {
     }
 });
 
+document.querySelector(".resetButton").addEventListener("click", () => {
+    clear();
+    background("#00132d");
+    rounds = 0;
+})
 
 document.querySelector("#planetSetup input[type='color']").addEventListener("change", (e) => {
     planetConfig[document.querySelector("#planetSetup select").value].color = e.target.value;

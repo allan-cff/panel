@@ -40,12 +40,20 @@ h2 {
     font-size: 15px;
 }
 
+#pageMiddle{
+    display: flex;
+    flex-direction: row;
+    row-gap: 3px;
+    grid-template-rows: auto 700px auto;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
 #canvasContainer {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 550px;
+    height: 500px;
     width: 700px;
 }
 
@@ -69,9 +77,25 @@ h2 {
     margin-left: 5px;
 }
 
+#canvasControl {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 5px;
+}
+
+
+#canvasControl svg{
+    height: 1.2em;
+    transform: translateY(3px);
+}
+
 
 #canvasControl button {
-    padding: 10px;
+    height: 37px;
+    width: 37px;
 }
 
 .pauseButton {
@@ -82,7 +106,7 @@ h2 {
     background-color: #DE0A16 !important;
 }
 
-input, button, a, select {
+input, button, a, select, .center>div {
     background-color: #006AF5;
     border-radius : 5px;
     text-align: center;
@@ -142,7 +166,7 @@ input[type="text"] {
     border : solid 5px #006AF5;
 }
 
-svg {
+#objectSetupForm svg {
     height: 1em;
     position: relative;
     top: 50%;
@@ -151,8 +175,9 @@ svg {
 
 .center svg{
     height: 1em;
-    position:relative;
+    position: relative;
     top: 30%;
+    transform: translate(-50%, -75%);
 }
 
 #supprObjectButton>svg {
@@ -169,6 +194,7 @@ path {
 
 #viewSyst{
     background-color: gold;
+    color: #00193b;
 }
 
 #newSyst{
@@ -177,9 +203,17 @@ path {
 }
 
 
-.center>button{
+.center>button, .center>div{
     height: 50px;
     width: 500px;
+    line-height: 50px;
+}
+
+.center>div>input{
+    border: solid 1px #ffffff;
+    background-color: #006AF5;
+    color: #ffffff;
+    margin-left: 3px;
 }
 
 #container {
@@ -206,6 +240,16 @@ path {
     text-align: center;
     flex-basis: 500px;  
     
+}
+
+#downloadButton{
+    height: 50px;
+    text-decoration: none;
+    line-height: 50px;
+}
+
+#viewSyst path{
+    fill: #00193b;
 }
  
 /*align-items: center;
