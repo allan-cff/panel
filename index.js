@@ -2,10 +2,12 @@ let rounds = 0
 let isRunning = true;
 let planetConfig = {};
 let playSpeed = 1;
+let bgColor = "#00132d"
+let viewSize = 5e+11;
 
 
 function preload(){
-    data = loadJSON('./mercury.json');
+    data = loadJSON('./sysSolaire.json');
 }
 
 function setup() {
@@ -20,6 +22,7 @@ function setup() {
         planetConfig[key].visible= true;
     }
     document.querySelector("#planetSetup input[type=color]").value = "#ffbb00";
+    background(bgColor);
     frameRate(30);
     noStroke();
     loop();
@@ -28,13 +31,16 @@ function setup() {
 function draw() {
     resetPos();
     for (const [key, value] of Object.entries(data)) {
+        //hidePreviousPoint(value[Math.max(rounds-playSpeed, 0)][0], Math.min(width, height), viewSize)
+        //hidePreviousPoint(value[Math.max(rounds-playSpeed*4, 0)][0], Math.min(width, height), viewSize)
         setPlanet(key);
         if(planetConfig[key].visible){
-            placePoint(value[rounds][0], Math.min(width, height), 2.000000e+11);
-            trace(value, rounds, Math.min(width, height), 2.000000e+11);
+            console.log(value[rounds][2]);
+            placePoint(value[rounds][0], Math.min(width, height), viewSize);
+            //trace(value, rounds, Math.min(width, height), viewSize);
         }
     }
-    if(data["mercury-euler"][rounds+playSpeed]!==undefined){
+    if(data["earth-euler"][rounds+playSpeed]!==undefined){
         rounds+=playSpeed;
     }
 }
@@ -51,6 +57,13 @@ function setPlanet(planet){
     fill(planetConfig[planet].color);
 }
 
+function hidePreviousPoint(coordinates, canvaMinLen, realMaxLen){
+    let x = coordinates[0]===0 ? 0 : coordinates[0]/realMaxLen*(canvaMinLen-5);
+    let y = coordinates[1]===0 ? 0 : coordinates[1]/realMaxLen*(canvaMinLen-5);
+    fill(bgColor);
+    circle(x, y, 11);
+}
+
 function placePoint(coordinates, canvaMinLen, realMaxLen){
     let x = coordinates[0]===0 ? 0 : coordinates[0]/realMaxLen*(canvaMinLen-5);
     let y = coordinates[1]===0 ? 0 : coordinates[1]/realMaxLen*(canvaMinLen-5);
@@ -58,7 +71,7 @@ function placePoint(coordinates, canvaMinLen, realMaxLen){
 }
 
 function trace(pointList, r, canvaMinLen, realMaxLen){
-    for(let i = 0; i <= r; i++){
+    for(let i = Math.max(r-100, 0); i <= r; i++){
         console.log(i, pointList[i][0][0], pointList[i][0][1])
         let x = pointList[i][0][0]===0 ? 0 : pointList[i][0][0]/realMaxLen*(canvaMinLen-5);
         let y = pointList[i][0][1]===0 ? 0 : pointList[i][0][1]/realMaxLen*(canvaMinLen-5);
@@ -89,8 +102,8 @@ document.querySelector("#planetSetup select").addEventListener("change", (e) => 
     document.querySelector("#planetSetup input[type='checkbox']").checked = planetConfig[e.target.value].visible;
     document.querySelector("#planetSetup input[type='color']").value = planetConfig[e.target.value].color;
 })
+
 document.querySelector("#playSpeed").addEventListener("click", (e) => {
-    console.log(e.target.innerHTML);
     if(e.target.innerHTML === "X1"){
         e.target.innerHTML = "X2";
         playSpeed = 2;
@@ -107,6 +120,11 @@ document.querySelector("#playSpeed").addEventListener("click", (e) => {
         return;
     }
     if(e.target.innerHTML === "X10"){
+        e.target.innerHTML = "X50";
+        playSpeed = 50;
+        return;
+    }
+    if(e.target.innerHTML === "X50"){
         e.target.innerHTML = "X1";
         playSpeed = 1;
     }

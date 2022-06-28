@@ -33,11 +33,11 @@ body {
 }
 
 h1 {
-    font-size: 35px;
+    font-size: 27px;
 }
 
 h2 {
-    font-size: 22px;
+    font-size: 15px;
 }
 
 #canvasContainer {
@@ -114,6 +114,23 @@ input, button, a, select {
     height: auto;
 }
 
+/* Liens */
+
+#home{
+    height: 2.5em;
+    position: relative;
+    top: 30%;
+    transform: translate(0%, 10%);
+}
+
+#homeLink{
+    background-color: #00193b;
+    margin-right: 500px;
+}
+
+
+/* Style des bouttons */
+
 .downloadButton {
     text-decoration: none;
     padding-top: 5px;
@@ -132,6 +149,12 @@ svg {
     transform: translate(-50%, -75%);
 }
 
+.center svg{
+    height: 1em;
+    position:relative;
+    top: 30%;
+}
+
 #supprObjectButton>svg {
     transform: translate(-50%, -85%);
 }
@@ -139,3 +162,53 @@ svg {
 path {
     fill : #ffffff;
 }
+
+#delSyst{
+    background-color: #DE0A16 !important;
+}
+
+#viewSyst{
+    background-color: gold;
+}
+
+#newSyst{
+    height: 50px;
+    width: 500px;
+}
+
+
+.center>button{
+    height: 50px;
+    width: 500px;
+}
+
+#container {
+    display:flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.right {
+    text-align: center;
+    flex-basis: 200px; 
+}
+
+.left {
+    text-align: center; 
+    flex-basis: 200px; 
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    flex-basis: 500px;  
+    
+}
+ 
+/*align-items: center;
+    align-content:center;
+    justify-content: space-between;
+    flex:auto;*/
