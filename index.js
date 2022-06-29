@@ -4,9 +4,10 @@ let planetConfig = {};
 let playSpeed = 1;
 let bgColor = "#00132d"
 let viewSize = 5e+11;
+let activeSystem = sessionStorage.getItem("activeSystem");
+let systemObject = JSON.parse(sessionStorage.getItem(activeSystem));
 
 function preload() {
-    console.log('./systems/' + sessionStorage.getItem("activeSystem") + '/trajectory.json')
     data = loadJSON('./systems/' + sessionStorage.getItem("activeSystem") + '/trajectory.json');
 }
 
@@ -18,7 +19,8 @@ function setup() {
     for (key in data) {
         let select = document.querySelector("#planetSelect");
         select.insertAdjacentHTML("beforeend", "<option>" + key + "</option>");
-        planetConfig[key] = {color: "#ffbb00"};
+        let planetName = key.split('-')[0]
+        planetConfig[key] = {color: systemObject.star.childrens[planetName].color};
         planetConfig[key].visible = true;
     }
     document.querySelector("#planetSetup input[type=color]").value = "#ffbb00";
@@ -35,7 +37,6 @@ function draw() {
         hidePreviousPoint(value[Math.max(rounds - playSpeed * 4, 0)][0], Math.min(width, height), viewSize)
         setPlanet(key);
         if (planetConfig[key].visible) {
-            console.log(value[rounds][2]);
             placePoint(value[rounds][0], Math.min(width, height), viewSize);
             trace(value, rounds, Math.min(width, height), viewSize);
         }
@@ -72,7 +73,6 @@ function placePoint(coordinates, canvaMinLen, realMaxLen) {
 
 function trace(pointList, r, canvaMinLen, realMaxLen) {
     for (let i = Math.max(r - 100, 0); i <= r; i++) {
-        console.log(i, pointList[i][0][0], pointList[i][0][1])
         let x = pointList[i][0][0] === 0 ? 0 : pointList[i][0][0] / realMaxLen * (canvaMinLen - 5);
         let y = pointList[i][0][1] === 0 ? 0 : pointList[i][0][1] / realMaxLen * (canvaMinLen - 5);
         circle(x, y, 0.5);
@@ -133,4 +133,12 @@ document.querySelector("#playSpeed").addEventListener("click", (e) => {
         e.target.innerHTML = "X1";
         playSpeed = 1;
     }
+})
+
+document.querySelector("#planetSelect").addEventListener("change", (e) => {
+    let planetName = e.target.value.split('-')[0];
+    document.getElementById("planetInfo").innerHtml = "<h1>" + systemObject.star.childrens[planetName].name + "</h1>\n" +
+        "            <p>Masse: "+ systemObject.star.childrens[planetName].mass +"kg</p>\n" +
+        "            <p>Périhélie: "+ systemObject.star.childrens[planetName].perihelion +"m</p>\n" +
+        "            <p>Demi-grand axe: "+ systemObject.star.childrens[planetName].eqRadius +"m</p>"
 })

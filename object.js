@@ -31,15 +31,10 @@ if(activeObject!=="star"){
 }
 
 document.querySelector("input[type=button]:not(#supprObjectButton)").addEventListener("click", (e) => {
-    console.log("clicked");
     document.querySelectorAll("input:not([type=button])").forEach((elem) => {
         if (activeObject === "star") {
             systemObject.star[elem.name] = elem.value;
         } else {
-            console.log(elem);
-            console.log(elem.name);
-            console.log(elem.value);
-            console.log(systemObject.star.childrens[activeObject]);
             systemObject.star.childrens[activeObject][elem.name] = elem.value;
         }
     })
