@@ -138,6 +138,34 @@ input, button, a, select, .center>div {
     height: auto;
 }
 
+/* Images */
+
+#astronaut, #leftLogo {
+    height: 120px;
+}
+
+#kepler, #systSolar, #earthImg, #euler{
+    height:300px;
+    text-align: center ;
+}
+
+#kepler{
+    margin-left: 15px;
+}
+
+#systSolar{
+    margin-top: 30px;
+}
+
+section #earthImg {
+    height: 250px;
+    margin-top: 17px;
+}
+
+#euler{
+    margin-left: 10px;
+}
+
 /* Liens */
 
 #home{
@@ -250,6 +278,18 @@ path {
 
 #viewSyst path{
     fill: #00193b;
+}
+
+.right {
+    text-align: justify;
+    flex-basis: 250px;
+    border: thick double #32a1ce;
+}
+
+.left {
+    text-align: justify;
+    flex-basis: 250px;
+    border: thick double #32a1ce;
 }
  
 /*align-items: center;

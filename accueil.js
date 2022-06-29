@@ -20,10 +20,31 @@ fetch('./systemsList.json')
 
 document.getElementById('newRandomSyst').addEventListener("click", () => {
     sessionStorage.setItem("activeSystem", "newRandomSyst");
+    let jsonSchema = {
+        "star": {
+            "name": "newStar",
+            "color": "#ffdd0",
+            "mass": 1.988e30,
+            "childrens": [
+            ]
+        },
+        "id": "",
+        "name": "",
+        "method": "euler",
+        "deltaTime": 8640
+    };
+    let randomPlanet = ["Romulus", "Vulcain", "Genesis", "Aldea"][getRandomInt(4)]
+    jsonSchema.star.childrens[randomPlanet] = {color : "#919191"};
+    jsonSchema.star.childrens[randomPlanet].name = randomPlanet;
+    jsonSchema.star.childrens[randomPlanet].eccentricity = 0.1;
+    jsonSchema.star.childrens[randomPlanet].eqRadius = Math.random()*100000000000;
+    jsonSchema.star.childrens[randomPlanet].perihelion = Math.random()*100000000000;
+    jsonSchema.star.childrens[randomPlanet].mass = Math.random()*1e24;
+    sessionStorage.setItem("newSystem", JSON.stringify(jsonSchema));
+    window.location.pathname = "panel/edit.html";
 });
 
 document.getElementById('newSyst').addEventListener("click", () => {
-    console.log("fired");
     sessionStorage.setItem("activeSystem", "newSystem");
     let jsonSchema = {
         "star": {
@@ -49,3 +70,7 @@ document.getElementById('newSyst').addEventListener("click", () => {
     sessionStorage.setItem("newSystem", JSON.stringify(jsonSchema));
     window.location.pathname = "panel/edit.html";
 })
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
